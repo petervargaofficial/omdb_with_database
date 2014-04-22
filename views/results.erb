@@ -1,0 +1,8 @@
+<% @results.each do |movie| %>
+	<a href = "/movie_detail/<%=movie["id"]%>"><%= movie["title"] %> <%=movie["year"] %></br></a>
+<% end %>
+
+
+<form action='/' method='get/'>
+	<input value="Return to Homepage" type="submit">
+</form>

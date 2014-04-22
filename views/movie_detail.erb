@@ -1,0 +1,11 @@
+<% @movie_detail.each do |detail| %>
+	Title: <strong> <%= detail["title"] %> </strong> </br>
+	Description: <strong> <%= detail["description"] %> </strong> </br>
+	Rating: <strong> <%= detail["rating"] %> </strong> </br>
+	Year: <strong> <%= detail["year"] %> </strong> </br>
+<% end %>
+
+
+<form action='/' method='get/'>
+	<input value="Return to Homepage" type="submit">
+</form>

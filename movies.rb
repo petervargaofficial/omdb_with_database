@@ -11,26 +11,69 @@ end
 
 get '/' do
   #Add code here
+  erb :index
 end
 
 
-#Add code here
-
+# Add code here
 
 get '/movies/new' do
-  erb :new_movie
+  erb :new
 end
+
+# get '/movies' do
+#   "sdf"
+# end
 
 post '/movies' do
   c = PGconn.new(:host => "localhost", :dbname => dbname)
-  c.exec_params("INSERT INTO movies (title, year) VALUES ($1, $2)",
-                  [params["title"], params["year"]])
+  c.exec_params("INSERT INTO movies (title, year, description, rating) VALUES ($1, $2, $3, $4)",
+                  [params["title"], params["year"], params["description"], params["rating"]])
   c.close
+  # binding.pry
+  # @title = params["title"]
+  # @year = params["year"]
+  # @description = params["description"]
+  # @rating = params["rating"]
+  # binding.pry
+  # redirect '/confirmation'
+  # TODO: create redirecting page - the global variables are not stored
   redirect '/'
 end
 
+
+
+get '/results' do
+  c = PGconn.new(:host => "localhost", :dbname => dbname)
+  @results = c.exec_params("SELECT * FROM movies WHERE title = $1;", [params["title"]])  
+  c.close
+  # binding.pry
+  # @results.inspect
+  # TODO: why @results.inspect is not returning anything meeaningfull yet works in erb :results
+  erb :results
+end
+
+
+get '/movie_detail/:id' do
+  c = PGconn.new(:host => "localhost", :dbname => dbname)
+  @movie_detail = c.exec_params("SELECT * FROM movies WHERE id = $1;", [params[:id]])  
+  c.close
+  @movie_detail.inspect
+  # binding.pry
+  erb :movie_detail
+end
+
+# <!-- <%= @movie_detail["title"] %> <%=@movie_detail["year"] -->
+
+
+get '/confirmation' do 
+    erb :confirmation
+end
+
+
+
 def dbname
-  "test.db"
+  "testdb"
 end
 
 def create_movies_table
@@ -67,3 +110,4 @@ def seed_movies_table
   c.close
 end
 
+# binding.pry
